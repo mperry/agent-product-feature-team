@@ -1,0 +1,178 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login System</title>
+    <style> body {
+        font-family: Arial, sans-serif;
+    }
+    
+    #login-form {
+        max-width: 300px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 4px rgba(0,0,0,.06);
+    }
+    
+    #login-form label {
+        display: block;
+        margin-bottom: 10px;
+    }
+    
+    #login-form input[type="text"], #login-form input[type="password"] {
+        width: 100%;
+        height: 40px;
+        font-size: 16px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        box-shadow: none;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+    }
+    
+    #login-form button[type="submit"] {
+        background-color: #4CAF50;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    #login-form button[type="submit"]:hover {
+        background-color: #3e8e41;
+    }
+    
+    #forgot-password-link {
+        display: block;
+        margin-top: 20px;
+        color: #337ab7;
+        text-decoration: none;
+    }
+    
+    #forgot-password-modal {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(0,0,0,.5);
+        display: none;
+    }
+    
+    #forgot-password-modal .modal-content {
+        width: 300px;
+        height: 200px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 4px rgba(0,0,0,.06);
+    }
+    
+    #forgot-password-modal .modal-content h2 {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }</style>
+</head>
+<body>
+    <!-- Login Form -->
+    <form id="login-form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username"><br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br><br>
+        <button id="login-btn">Login</button>
+        <p id="error-msg"></p>
+    </form>
+
+    <!-- Forgot Password Link -->
+    <a href="#forgot-password-modal" id="forgot-password-link">Forgot Password?</a>
+
+    <!-- Modal for Forgot Password -->
+    <div id="forgot-password-modal" class="modal">
+        <div class="modal-content">
+            <h2>Reset Your Password</h2>
+            <form id="forgot-password-form">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username"><br><br>
+                <button id="reset-btn">Reset Password</button>
+                <p id="success-msg"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>  const loginForm = document.getElementById('login-form');
+        const forgotPasswordLink = document.getElementById('forgot-password-link');
+        const forgotPasswordModal = document.getElementById('forgot-password-modal');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const loginBtn = document.getElementById('login-btn');
+        const errorMsg = document.getElementById('error-msg');
+        const successMsg = document.getElementById('success-msg');
+        
+        // Login Form Submission
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = usernameInput.value;
+            const password = passwordInput.value;
+            // Call API endpoint to validate credentials
+            fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.token) {
+                    // Login successful, redirect to dashboard
+                    window.location.href = '/dashboard';
+                } else {
+                    // Invalid credentials, display error message
+                    errorMsg.textContent = 'Invalid username or password';
+                    loginBtn.disabled = true;
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                errorMsg.textContent = 'Error logging in. Please try again.';
+                loginBtn.disabled = true;
+            });
+        });
+        
+        // Forgot Password Form Submission
+        forgotPasswordModal.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = usernameInput.value;
+            // Call API endpoint to reset password
+            fetch('/forgot-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username })
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    // Password reset successful, display success message
+                    successMsg.textContent = 'Password reset successfully. Please log in again.';
+                    forgotPasswordModal.style.display = 'none';
+                } else {
+                    // Error resetting password, display error message
+                    errorMsg.textContent = 'Error resetting password. Please try again.';
+                    loginBtn.disabled = true;
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+                errorMsg.textContent = 'Error resetting password. Please try again.';
+                loginBtn.disabled = true;
+            });
+        });  
+        </script>
+</body>
+</html>
