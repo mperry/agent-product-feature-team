@@ -73,6 +73,7 @@ class CrewFinancialAnalysis():
                         "requirements, and acceptance criteria.",
             expected_output="A JSON specification with fields: feature, goals, requirements, acceptance_criteria.",
             agent=self.product_manager_agent,
+            output_key="product_spec"
         )            
 
     @task
@@ -81,6 +82,7 @@ class CrewFinancialAnalysis():
             description="Based on the product spec, propose a wireframe/design brief with layout, elements, and style notes.",
             expected_output="A JSON wireframe spec with fields: layout, elements, style_notes.",
             agent=self.uiux_designer_agent,
+            output_key="uiux_design"
         )
 
     @task
@@ -89,6 +91,8 @@ class CrewFinancialAnalysis():
             description="From the product spec, define API endpoints, database schema, and backend logic needed.",
             expected_output="A JSON spec with fields: api_endpoints, database_schema.",
             agent=self.backend_engineer_agent,
+            context=["product_spec"],
+            output_key="backend_plan"
         )
 
     @task
@@ -97,19 +101,15 @@ class CrewFinancialAnalysis():
             description="Using the design brief and backend API plan, generate working frontend code (HTML, CSS, JS).",
             expected_output="Code snippets that implement the login page UI connected to backend endpoints.",
             agent=self.execution_agent,
+            output_key="frontend_code"
+
         )
 
     @crew
     def product_feature_crew(self) -> Crew:
         return Crew(
-            agents=[self.product_manager_agent(), 
-                    self.uiux_designer_agent(),
-                    self.backend_engineer_agent(),
-                    self.execution_agent()],
-            tasks=[self.product_design_task(), 
-                    self.uiux_design_task(), 
-                    self.backend_development_task(), 
-                    self.frontend_development_task()],
+            agents=self.agents,
+            tasks=self.tasks,
             process=Process.sequential,
             verbose=True
         )
