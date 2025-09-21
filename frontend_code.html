@@ -1,7 +1,4 @@
-**
 
-Here is the working frontend code (HTML, CSS, JS) for the Customer Login feature:
-```html
 <!-- login.html -->
 <!DOCTYPE html>
 <html lang="en">
@@ -10,29 +7,8 @@ Here is the working frontend code (HTML, CSS, JS) for the Customer Login feature
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Login</title>
     <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div id="login-container">
-        <h2 id="login-header">Customer Login</h2>
-        <form id="login-form">
-            <label for="username-input">Username:</label>
-            <input type="text" id="username-input" placeholder="Enter your username" />
-            <br>
-            <label for="password-input">Password:</label>
-            <input type="password" id="password-input" placeholder="Enter your password" />
-            <br>
-            <button id="login-button">Log In</button>
-        </form>
-        <a id="forgot-password-link" href="#">Forgot Password?</a>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
-```
-
-```css
-/* styles.css */
+    <style>
+        /* styles.css */
 #login-container {
     background-color: #f7f7f7;
     width: 300px;
@@ -70,10 +46,25 @@ Here is the working frontend code (HTML, CSS, JS) for the Customer Login feature
     color: #337ab7;
     margin-top: 20px;
 }
-```
+    </style>
+</head>
+<body>
+    <div id="login-container">
+        <h2 id="login-header">Customer Login</h2>
+        <form id="login-form">
+            <label for="username-input">Username:</label>
+            <input type="text" id="username-input" placeholder="Enter your username" />
+            <br>
+            <label for="password-input">Password:</label>
+            <input type="password" id="password-input" placeholder="Enter your password" />
+            <br>
+            <button id="login-button">Log In</button>
+        </form>
+        <a id="forgot-password-link" href="#">Forgot Password?</a>
+    </div>
 
-```javascript
-// script.js
+    <script>
+        // script.js
 const loginForm = document.getElementById('login-form');
 const loginButton = document.getElementById('login-button');
 const forgotPasswordLink = document.getElementById('forgot-password-link');
@@ -126,12 +117,6 @@ forgotPasswordLink.addEventListener('click', (event) => {
         console.error(error);
     });
 });
-```
-
-This code implements the Customer Login feature, including:
-
-* A login form with input fields for username and password, and a Log In button.
-* JavaScript code that handles form submission and sends requests to the API endpoints for login and forgot password.
-* CSS styles that apply layout, typography, and visual effects to the login page.
-
-This implementation meets the product specification requirements and acceptance criteria.
+    </script>
+</body>
+</html>
