@@ -3,68 +3,99 @@
 <head>
 <style>
 body {
-  font-family: 'Open Sans', sans-serif;
-  background-color: #f0f0f0;
+  font-family: Arial, sans-serif;
 }
 
-h1 {
-  color: #3498db;
+.login-container {
+  max-width: 300px;
+  margin: 40px auto;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-button[type="submit"] {
-  background-color: #9b59b7;
+.login-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.label {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.input-field {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.button {
+  background-color: #4CAF50;
   color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-button[type="submit"]:hover {
-  background-color: #43a047;
+.button:hover {
+  background-color: #3e8e41;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
 }
 </style>
 </head>
 <body>
-<h1 id="header">Welcome to our app!</h1>
-<img src="/images/hero.jpg" alt="Hero image for the app" id="hero">
-<ul id="features">
-  <li title="Feature 1">This is a brief description of feature 1</li>
-  <li title="Feature 2">This is a brief description of feature 2</li>
-</ul>
-<button id="call-to-action" type="submit">Sign up now</button>
-<footer id="footer">&copy; 2023 our app. All rights reserved.</footer>
-<script>
-function validateLogin() {
-  var username = document.getElementById('username').value;
-  var password = document.getElementById('password').value;
-
-  if (username && password) {
-    // Connect to backend API endpoints
-    fetch('/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }),
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        // Login successful, redirect to dashboard
-        window.location.href = '/dashboard';
-      } else {
-        alert('Invalid credentials');
-      }
-    })
-    .catch(error => console.error(error));
-  } else {
-    alert('Please fill in both fields');
-  }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('login-form').addEventListener('submit', validateLogin);
-});
-</script>
-<form id="login-form">
-  <input type="text" id="username" placeholder="Username">
-  <input type="password" id="password" placeholder="Password">
-  <button type="submit">Login</button>
-</form>
+<div class="login-container">
+  <h2>Login</h2>
+  <form>
+    <div class="login-form">
+      <label for="username" class="label">Username:</label>
+      <input type="text" id="username" name="username" class="input-field">
+      <br><br>
+      <label for="password" class="label">Password:</label>
+      <input type="password" id="password" name="password" class="input-field">
+      <br><br>
+      <label for="remember-me" class="label">Remember me:</label>
+      <input type="checkbox" id="remember-me" name="remember-me">
+      <br><br>
+      <button type="submit" class="button">Log In</button>
+    </div>
+  </form>
+  <script>
+    const loginForm = document.querySelector('form');
+    loginForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.user_id) {
+          // User logged in successfully
+          console.log('User logged in successfully');
+        } else {
+          // Invalid login credentials
+          const errorMessage = document.getElementById('error-message');
+          errorMessage.textContent = `Error: ${data.error_message}`;
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    });
+  </script>
 </body>
 </html>
