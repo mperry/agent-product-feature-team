@@ -80,7 +80,7 @@ class CrewFeatureDevelopment():
             description="From the product spec, define API endpoints, database schema, and backend logic needed.",
             expected_output="A JSON spec with fields: api_endpoints, database_schema.",
             agent=self.backend_engineer_agent(),
-            context=[self.product_design_task]
+            context=[self.product_design_task],
             output_key="backend_plan.json"
         )
 
