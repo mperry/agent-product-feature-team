@@ -25,7 +25,8 @@ def run():
     }
     
     try:
-        CrewFeatureDevelopment.product_feature_crew.kickoff(inputs=inputs)
+        crew_instance = CrewFeatureDevelopment()
+        crew_instance.product_feature_crew().kickoff(inputs=inputs)
     except Exception as e:
         raise Exception(f"An error occurred while running the crew: {e}")
 
