@@ -16,7 +16,6 @@ class CrewFeatureDevelopment():
                     "prioritized tasks that align with business objectives. "
                     "You always consider usability, feasibility, and value when writing requirements.",
         verbose=True,
-        allow_delegation=True,
         # tools = [self.scrape_tool, self.search_tool]
     )
 
@@ -28,7 +27,6 @@ class CrewFeatureDevelopment():
                     "You take product requirements and transform them into user journeys, wireframes, and style notes that engineers "
                     "can build upon. You think like the end-user and aim to maximize clarity and engagement in your designs.",
             verbose=True,
-            allow_delegation=True,
             # tools = [self.scrape_tool, self.search_tool]
         )
     def backend_engineer_agent(self) -> Agent:
@@ -40,7 +38,6 @@ class CrewFeatureDevelopment():
                     "with existing systems. You anticipate potential bottlenecks and provide developers with clear implementation plans.",
                
             verbose=True,
-            allow_delegation=True,
             # tools = [self.scrape_tool, self.search_tool]
         )
 
@@ -53,7 +50,6 @@ class CrewFeatureDevelopment():
                         "to modern standards (HTML, CSS, JS, or frameworks like React). "
                         "You pay close attention to detail, accessibility, and performance while integrating backend logic into the UI.",
             verbose=True,
-            allow_delegation=True,
             # tools = [self.scrape_tool, self.search_tool]
         )
 
