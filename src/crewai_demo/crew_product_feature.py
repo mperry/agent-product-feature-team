@@ -16,7 +16,7 @@ class CrewFeatureDevelopment():
     def product_manager_agent(self) -> Agent:
         return Agent(
         role="Product Manager",
-        goal="Translate vague feature requests into clear, actionable product specifications with acceptance criteria.",
+        goal=f"Translate vague feature {feature_request} requests into clear, actionable product specifications with acceptance criteria.",
         backstory=" You are an experienced product manager who bridges the gap between customer needs" 
                     "and the engineering team. You excel at gathering high-level ideas and shaping them into structured,"
                     "prioritized tasks that align with business objectives. "
@@ -69,10 +69,9 @@ class CrewFeatureDevelopment():
     @task
     def product_design_task(self) -> Task:
         return Task(
-            description=f"Take the raw feature request {feature_request} and break it into a structured product specification with goals, "
+            description="Take the raw feature request {feature_request} and break it into a structured product specification with goals, "
                         "requirements, and acceptance criteria.",
             expected_output="A JSON specification with fields: feature, goals, requirements, acceptance_criteria.",
-            context=["feature_request"]
             agent=self.product_manager_agent,
             output_key="product_spec"
         )            
@@ -83,7 +82,7 @@ class CrewFeatureDevelopment():
             description="Based on the product spec, propose a wireframe/design brief with layout, elements, and style notes.",
             expected_output="A JSON wireframe spec with fields: layout, elements, style_notes.",
             agent=self.uiux_designer_agent,
-            context=["product_spec"]
+            context=["product_spec"],
             output_key="uiux_design"
         )
 
@@ -104,8 +103,7 @@ class CrewFeatureDevelopment():
             expected_output="Code snippets that implement the login page UI connected to backend endpoints.",
             agent=self.execution_agent,
             context=["uiux_design", "backend_plan"],
-            output_file="frontend_code"
-
+            output_file="frontend_code",
         )
 
     @crew
