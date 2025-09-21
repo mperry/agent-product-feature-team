@@ -5,7 +5,7 @@ from typing import List
 from crewai.tools import SerperDevTool, ScrapeWebsiteTool
 
 @CrewBase
-class CrewFinancialAnalysis():
+class CrewFeatureDevelopment():
 
     agents: List[BaseAgent]
     tasks: List[Task]
@@ -69,9 +69,10 @@ class CrewFinancialAnalysis():
     @task
     def product_design_task(self) -> Task:
         return Task(
-            description="Take the raw feature request and break it into a structured product specification with goals, "
+            description=f"Take the raw feature request {feature_request} and break it into a structured product specification with goals, "
                         "requirements, and acceptance criteria.",
             expected_output="A JSON specification with fields: feature, goals, requirements, acceptance_criteria.",
+            context=["feature_request"]
             agent=self.product_manager_agent,
             output_key="product_spec"
         )            
@@ -82,6 +83,7 @@ class CrewFinancialAnalysis():
             description="Based on the product spec, propose a wireframe/design brief with layout, elements, and style notes.",
             expected_output="A JSON wireframe spec with fields: layout, elements, style_notes.",
             agent=self.uiux_designer_agent,
+            context=["product_spec"]
             output_key="uiux_design"
         )
 
@@ -101,7 +103,7 @@ class CrewFinancialAnalysis():
             description="Using the design brief and backend API plan, generate working frontend code (HTML, CSS, JS).",
             expected_output="Code snippets that implement the login page UI connected to backend endpoints.",
             agent=self.execution_agent,
-            output_key="frontend_code"
+            output_file="frontend_code"
 
         )
 
