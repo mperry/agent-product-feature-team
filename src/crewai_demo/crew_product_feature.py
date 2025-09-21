@@ -70,15 +70,15 @@ class CrewFeatureDevelopment():
 
     def backend_development_task(self) -> Task:
         return Task(
-            description="From the product spec, define API endpoints, database schema, and backend logic needed.",
-            expected_output="A JSON spec with fields: api_endpoints, database_schema.",
+            description="Base on the product spec, define API endpoints, database schema, and backend logic needed.",
+            expected_output="A JSON backend API spec with fields: api_endpoints, database_schema.",
             agent=self.backend_engineer_agent()
         )
 
     def frontend_development_task(self) -> Task:
         return Task(
-            description="Using the design brief and backend API plan, generate working frontend code (HTML, CSS, JS).",
-            expected_output="Code snippets that implement the login page UI connected to backend endpoints.",
+            description="Using the wireframe and the backend API spec, generate working frontend code (HTML, CSS, JS).",
+            expected_output="An html file including javascript and Css together that implement the login page UI connected to backend endpoints.",
             agent=self.frontend_engineer_agent(),
             output_file="frontend_code.html"
         )
