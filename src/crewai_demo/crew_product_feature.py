@@ -103,6 +103,7 @@ class CrewFeatureDevelopment():
             description="Using the design brief and backend API plan, generate working frontend code (HTML, CSS, JS).",
             expected_output="Code snippets that implement the login page UI connected to backend endpoints.",
             agent=self.execution_agent,
+            context=["uiux_design", "backend_plan"],
             output_file="frontend_code"
 
         )
