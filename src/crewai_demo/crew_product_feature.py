@@ -16,6 +16,7 @@ class CrewFeatureDevelopment():
                     "prioritized tasks that align with business objectives. "
                     "You always consider usability, feasibility, and value when writing requirements.",
         verbose=True,
+        max_iter=2,  # Limit iterations for consistency
         # tools = [self.scrape_tool, self.search_tool]
     )
 
@@ -27,6 +28,7 @@ class CrewFeatureDevelopment():
                     "You take product requirements and transform them into user journeys, wireframes, and style notes that engineers "
                     "can build upon. You think like the end-user and aim to maximize clarity and engagement in your designs.",
             verbose=True,
+            max_iter=2,  # Limit iterations for consistency
             # tools = [self.scrape_tool, self.search_tool]
         )
     def backend_engineer_agent(self) -> Agent:
@@ -36,20 +38,22 @@ class CrewFeatureDevelopment():
             backstory="You are a backend engineer who cares deeply about performance, security, and clean architecture."
                     "You design reliable APIs and efficient data models that ensure features can scale and integrate smoothly "
                     "with existing systems. You anticipate potential bottlenecks and provide developers with clear implementation plans.",
-               
             verbose=True,
+            max_iter=2,  # Limit iterations for consistency
             # tools = [self.scrape_tool, self.search_tool]
         )
 
     def frontend_engineer_agent(self) -> Agent:
         return Agent(
-            role="Frontend Engineer",
-            goal="Build interactive, responsive, and accessible UI components that connect seamlessly with backend APIs.",
-            backstory="You are a frontend engineer passionate about creating smooth user experiences. "
-                        "You translate design briefs into working code, ensuring it adheres "
-                        "to modern standards (HTML, CSS, JS, or frameworks like React). "
-                        "You pay close attention to detail, accessibility, and performance while integrating backend logic into the UI.",
+            role="HTML Code Generator",
+            goal="Output ONLY valid HTML code. Never explain, never use markdown, never add comments or explanations.",
+            backstory="You are a strict HTML code generator. Your ONLY job is to output valid HTML code. "
+                        "You NEVER write explanations, comments, or use markdown formatting. "
+                        "You ALWAYS start with <!DOCTYPE html> and end with </html>. "
+                        "You ALWAYS embed CSS in <style> tags and JavaScript in <script> tags. "
+                        "Your output is ALWAYS a complete, working HTML file.",
             verbose=True,
+            max_iter=1,  # Limit iterations to prevent rambling
             # tools = [self.scrape_tool, self.search_tool]
         )
 
@@ -77,8 +81,32 @@ class CrewFeatureDevelopment():
 
     def frontend_development_task(self) -> Task:
         return Task(
-            description="Using the wireframe and the backend API spec, generate working frontend code (HTML, CSS, JS).",
-            expected_output="An html file including javascript and Css together that implement the login page UI connected to backend endpoints.",
+            description="""CRITICAL: You MUST generate ONLY a complete HTML file with embedded CSS and JavaScript.
+                            Requirements:
+                            1. Start with <!DOCTYPE html> and end with </html>
+                            2. Include all CSS in <style> tags within <head>
+                            3. Include all JavaScript in <script> tags before </body>
+                            4. Create a functional login page with username/password fields
+                            5. Connect to backend API endpoints
+                            6. NO explanatory text, NO markdown, NO code blocks
+                            7. ONLY the raw HTML code
+
+                            Example structure:
+                            <!DOCTYPE html>
+                            <html>
+                            <head>
+                            <style>
+                            /* CSS here */
+                            </style>
+                            </head>
+                            <body>
+                            <!-- HTML content here -->
+                            <script>
+                            // JavaScript here
+                            </script>
+                            </body>
+                            </html>""",
+            expected_output="A complete, valid HTML file that starts with <!DOCTYPE html> and contains all CSS and JavaScript inline. No markdown formatting, no explanatory text, just pure HTML code.",
             agent=self.frontend_engineer_agent(),
             output_file="frontend_code.html"
         )

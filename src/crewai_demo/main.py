@@ -21,9 +21,7 @@ def run():
     inputs = {
         # 'topic': 'VR & AR systems',
         # 'current_year': str(datetime.now().year)
-        'feature_request':'build a logic page for allowing customer to login the system'
-    }
-    
+        'feature_request':'build a clean login page for customers to login system with username and password as well as remember me option.'}
     try:
         crew_instance = CrewFeatureDevelopment()
         crew_instance.product_feature_crew().kickoff(inputs=inputs)

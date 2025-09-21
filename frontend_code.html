@@ -1,122 +1,70 @@
-
-<!-- login.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Login</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        /* styles.css */
-#login-container {
-    background-color: #f7f7f7;
-    width: 300px;
-    margin: 40px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+<style>
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: #f0f0f0;
 }
 
-#login-header {
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 20px;
+h1 {
+  color: #3498db;
 }
 
-#username-input, #password-input {
-    border-radius: 5px;
-    padding: 10px;
-    width: 100%;
-    box-sizing: border-box;
+button[type="submit"] {
+  background-color: #9b59b7;
+  color: #fff;
 }
 
-#login-button {
-    background-color: #4CAF50;
-    color: #fff;
-    cursor: pointer;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
+button[type="submit"]:hover {
+  background-color: #43a047;
 }
-
-#forgot-password-link {
-    text-decoration: underline;
-    color: #337ab7;
-    margin-top: 20px;
-}
-    </style>
+</style>
 </head>
 <body>
-    <div id="login-container">
-        <h2 id="login-header">Customer Login</h2>
-        <form id="login-form">
-            <label for="username-input">Username:</label>
-            <input type="text" id="username-input" placeholder="Enter your username" />
-            <br>
-            <label for="password-input">Password:</label>
-            <input type="password" id="password-input" placeholder="Enter your password" />
-            <br>
-            <button id="login-button">Log In</button>
-        </form>
-        <a id="forgot-password-link" href="#">Forgot Password?</a>
-    </div>
+<h1 id="header">Welcome to our app!</h1>
+<img src="/images/hero.jpg" alt="Hero image for the app" id="hero">
+<ul id="features">
+  <li title="Feature 1">This is a brief description of feature 1</li>
+  <li title="Feature 2">This is a brief description of feature 2</li>
+</ul>
+<button id="call-to-action" type="submit">Sign up now</button>
+<footer id="footer">&copy; 2023 our app. All rights reserved.</footer>
+<script>
+function validateLogin() {
+  var username = document.getElementById('username').value;
+  var password = document.getElementById('password').value;
 
-    <script>
-        // script.js
-const loginForm = document.getElementById('login-form');
-const loginButton = document.getElementById('login-button');
-const forgotPasswordLink = document.getElementById('forgot-password-link');
-
-loginButton.addEventListener('click', (event) => {
-    event.preventDefault();
-    const username = document.getElementById('username-input').value;
-    const password = document.getElementById('password-input').value;
-
+  if (username && password) {
+    // Connect to backend API endpoints
     fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
     })
-    .then((response) => response.json())
-    .then((data) => {
-        if (data.customer_id) {
-            // Successful login
-            console.log('Login successful!');
-        } else {
-            // Invalid username or password
-            alert('Invalid credentials');
-        }
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Login successful, redirect to dashboard
+        window.location.href = '/dashboard';
+      } else {
+        alert('Invalid credentials');
+      }
     })
-    .catch((error) => {
-        console.error(error);
-    });
-});
+    .catch(error => console.error(error));
+  } else {
+    alert('Please fill in both fields');
+  }
+}
 
-forgotPasswordLink.addEventListener('click', (event) => {
-    event.preventDefault();
-    const username = document.getElementById('username-input').value;
-
-    fetch('/api/forgot_password', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username }),
-    })
-    .then((response) => response.json())
-    .then((data) => {
-        if (data) {
-            // Password reset link sent successfully
-            console.log('Password reset link sent!');
-        } else {
-            // Invalid username
-            alert('Invalid username');
-        }
-    })
-    .catch((error) => {
-        console.error(error);
-    });
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('login-form').addEventListener('submit', validateLogin);
 });
-    </script>
+</script>
+<form id="login-form">
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+  <button type="submit">Login</button>
+</form>
 </body>
 </html>
