@@ -63,7 +63,7 @@ class CrewFeatureDevelopment():
                         "requirements, and acceptance criteria.",
             expected_output="A JSON specification with fields: feature, goals, requirements, acceptance_criteria.",
             agent=self.product_manager_agent(),
-            output_json="product_spec"
+            output_json="product_spec.json"
         )            
 
     def uiux_design_task(self) -> Task:
@@ -72,7 +72,7 @@ class CrewFeatureDevelopment():
             expected_output="A JSON wireframe spec with fields: layout, elements, style_notes.",
             agent=self.uiux_designer_agent(),
             context=[self.product_design_task],
-            output_json="uiux_design"
+            output_json="uiux_design.json"
         )
 
     def backend_development_task(self) -> Task:
@@ -81,7 +81,7 @@ class CrewFeatureDevelopment():
             expected_output="A JSON spec with fields: api_endpoints, database_schema.",
             agent=self.backend_engineer_agent(),
             context=[self.product_design_task]
-            output_key="backend_plan"
+            output_key="backend_plan.json"
         )
 
     def frontend_development_task(self) -> Task:
@@ -89,8 +89,8 @@ class CrewFeatureDevelopment():
             description="Using the design brief and backend API plan, generate working frontend code (HTML, CSS, JS).",
             expected_output="Code snippets that implement the login page UI connected to backend endpoints.",
             agent=self.frontend_engineer_agent(),
-            context=[self.product_design_task, self.uiux_design_task]
-            output_file="frontend_code"
+            context=[self.product_design_task, self.uiux_design_task],
+            output_file="frontend_code.html"
         )
 
     def product_feature_crew(self) -> Crew:
