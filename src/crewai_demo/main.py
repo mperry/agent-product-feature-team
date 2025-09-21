@@ -21,7 +21,7 @@ def run():
     inputs = {
         # 'topic': 'VR & AR systems',
         # 'current_year': str(datetime.now().year)
-        'business_requirement':'build a logic page for allowing customer to login the system'
+        'feature_request':'build a logic page for allowing customer to login the system'
     }
     
     try:

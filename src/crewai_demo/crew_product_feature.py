@@ -62,26 +62,21 @@ class CrewFeatureDevelopment():
             description="Take the raw feature request {feature_request} and break it into a structured product specification with goals, "
                         "requirements, and acceptance criteria.",
             expected_output="A JSON specification with fields: feature, goals, requirements, acceptance_criteria.",
-            agent=self.product_manager_agent(),
-            output_json="product_spec.json"
+            agent=self.product_manager_agent()
         )            
 
     def uiux_design_task(self) -> Task:
         return Task(
             description="Based on the product spec, propose a wireframe/design brief with layout, elements, and style notes.",
             expected_output="A JSON wireframe spec with fields: layout, elements, style_notes.",
-            agent=self.uiux_designer_agent(),
-            context=[self.product_design_task],
-            output_json="uiux_design.json"
+            agent=self.uiux_designer_agent()
         )
 
     def backend_development_task(self) -> Task:
         return Task(
             description="From the product spec, define API endpoints, database schema, and backend logic needed.",
             expected_output="A JSON spec with fields: api_endpoints, database_schema.",
-            agent=self.backend_engineer_agent(),
-            context=[self.product_design_task],
-            output_key="backend_plan.json"
+            agent=self.backend_engineer_agent()
         )
 
     def frontend_development_task(self) -> Task:
@@ -89,7 +84,6 @@ class CrewFeatureDevelopment():
             description="Using the design brief and backend API plan, generate working frontend code (HTML, CSS, JS).",
             expected_output="Code snippets that implement the login page UI connected to backend endpoints.",
             agent=self.frontend_engineer_agent(),
-            context=[self.product_design_task, self.uiux_design_task],
             output_file="frontend_code.html"
         )
 
