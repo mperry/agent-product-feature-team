@@ -1,11 +1,8 @@
 from crewai import Agent, Task, Crew, Process
-# from crewai.tools import SerperDevTool, ScrapeWebsiteTool
 
 
 class CrewFeatureDevelopment():
 
-    # search_tool = SerperDevTool()
-    # scrape_tool = ScrapeWebsiteTool()
 
     def product_manager_agent(self) -> Agent:
         return Agent(
@@ -16,8 +13,7 @@ class CrewFeatureDevelopment():
                     "prioritized tasks that align with business objectives. "
                     "You always consider usability, feasibility, and value when writing requirements.",
         verbose=True,
-        max_iter=2,  # Limit iterations for consistency
-        # tools = [self.scrape_tool, self.search_tool]
+        max_iter=2,  
     )
 
     def uiux_designer_agent(self) -> Agent:
@@ -28,8 +24,7 @@ class CrewFeatureDevelopment():
                     "You take product requirements and transform them into user journeys, wireframes, and style notes that engineers "
                     "can build upon. You think like the end-user and aim to maximize clarity and engagement in your designs.",
             verbose=True,
-            max_iter=2,  # Limit iterations for consistency
-            # tools = [self.scrape_tool, self.search_tool]
+            max_iter=2,  
         )
     def backend_engineer_agent(self) -> Agent:
         return Agent(
@@ -39,22 +34,23 @@ class CrewFeatureDevelopment():
                     "You design reliable APIs and efficient data models that ensure features can scale and integrate smoothly "
                     "with existing systems. You anticipate potential bottlenecks and provide developers with clear implementation plans.",
             verbose=True,
-            max_iter=2,  # Limit iterations for consistency
-            # tools = [self.scrape_tool, self.search_tool]
+            max_iter=2,  
         )
 
     def frontend_engineer_agent(self) -> Agent:
         return Agent(
             role="HTML Code Generator",
-            goal="Output ONLY valid HTML code. Never explain, never use markdown, never add comments or explanations.",
-            backstory="You are a strict HTML code generator. Your ONLY job is to output valid HTML code. "
+            goal="Output ONLY valid HTML code with complete CSS styling. Never explain, never use markdown, never add comments or explanations. Never add dots or periods at the beginning or end of the output.",
+            backstory="You are a strict HTML code generator with expertise in CSS styling. Your ONLY job is to output valid HTML code with complete CSS. "
                         "You NEVER write explanations, comments, or use markdown formatting. "
+                        "You NEVER add dots, periods, or any punctuation at the beginning or end of your output. "
                         "You ALWAYS start with <!DOCTYPE html> and end with </html>. "
                         "You ALWAYS embed CSS in <style> tags and JavaScript in <script> tags. "
-                        "Your output is ALWAYS a complete, working HTML file.",
+                        "You ALWAYS include CSS reset and style ALL HTML elements used in the page. "
+                        "You ALWAYS create modern, responsive designs with proper styling for every element. "
+                        "Your output is ALWAYS a complete, working HTML file with no extra characters.",
             verbose=True,
-            max_iter=1,  # Limit iterations to prevent rambling
-            # tools = [self.scrape_tool, self.search_tool]
+            max_iter=1,  
         )
 
     def product_design_task(self) -> Task:
@@ -67,36 +63,50 @@ class CrewFeatureDevelopment():
 
     def uiux_design_task(self) -> Task:
         return Task(
-            description="Based on the product spec, propose a wireframe/design brief with layout, elements, and style notes.",
+            description="Based on the product spec from the previous task, propose a wireframe/design brief with layout, elements, and style notes.",
             expected_output="A JSON wireframe spec with fields: layout, elements, style_notes.",
-            agent=self.uiux_designer_agent()
+            agent=self.uiux_designer_agent(),
+            context=[self.product_design_task()]
         )
 
     def backend_development_task(self) -> Task:
         return Task(
-            description="Base on the product spec, define API endpoints, database schema, and backend logic needed.",
+            description="Based on the product spec from the first task, define API endpoints, database schema, and backend logic needed.",
             expected_output="A JSON backend API spec with fields: api_endpoints, database_schema.",
-            agent=self.backend_engineer_agent()
+            agent=self.backend_engineer_agent(),
+            context=[self.product_design_task()]
         )
 
     def frontend_development_task(self) -> Task:
         return Task(
             description="""CRITICAL: You MUST generate ONLY a complete HTML file with embedded CSS and JavaScript.
+                            Based on the product spec and UI/UX design from previous tasks, create a functional login page.
                             Requirements:
                             1. Start with <!DOCTYPE html> and end with </html>
                             2. Include all CSS in <style> tags within <head>
                             3. Include all JavaScript in <script> tags before </body>
                             4. Create a functional login page with username/password fields
-                            5. Connect to backend API endpoints
+                            5. Connect to backend API endpoints from the backend task
                             6. NO explanatory text, NO markdown, NO code blocks
-                            7. ONLY the raw HTML code
+                            7. NO dots, periods, or punctuation at the beginning or end
+                            8. ONLY the raw HTML code
+                            
+                            CSS Requirements:
+                            - Include CSS reset (* { margin: 0; padding: 0; box-sizing: border-box; })
+                            - Style ALL HTML elements used (header, nav, ul, li, a, main, section, form, input, label, etc.)
+                            - Use modern CSS with proper selectors
+                            - Include hover effects and transitions
+                            - Make the design responsive and visually appealing
+                            - Use proper color scheme and typography
 
                             Example structure:
                             <!DOCTYPE html>
                             <html>
                             <head>
                             <style>
-                            /* CSS here */
+                            * { margin: 0; padding: 0; box-sizing: border-box; }
+                            body { font-family: system fonts; }
+                            /* Complete CSS for all elements */
                             </style>
                             </head>
                             <body>
@@ -106,8 +116,9 @@ class CrewFeatureDevelopment():
                             </script>
                             </body>
                             </html>""",
-            expected_output="A complete, valid HTML file that starts with <!DOCTYPE html> and contains all CSS and JavaScript inline. No markdown formatting, no explanatory text, just pure HTML code.",
+            expected_output="A complete, valid HTML file that starts with <!DOCTYPE html> and contains all CSS and JavaScript inline. The CSS must style ALL HTML elements used in the page. No markdown formatting, no explanatory text, no dots or periods at the beginning or end, just pure HTML code.",
             agent=self.frontend_engineer_agent(),
+            context=[self.product_design_task(), self.uiux_design_task(), self.backend_development_task()],
             output_file="frontend_code.html"
         )
 

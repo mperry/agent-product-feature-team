@@ -2,100 +2,103 @@
 <html>
 <head>
 <style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
 body {
   font-family: Arial, sans-serif;
 }
-
-.login-container {
-  max-width: 300px;
-  margin: 40px auto;
-  background-color: #f9f9f9;
+header {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
   padding: 20px;
-  border: 1px solid #ddd;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
 }
-
-.login-form {
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+}
+nav li {
+  margin-right: 20px;
+}
+nav a {
+  color: #fff;
+  text-decoration: none;
+}
+nav a:hover {
+  color: #ccc;
+}
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+}
+section {
+  background-color: #f7f7f7;
+  padding: 20px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+  border-radius: 10px;
+}
+form {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
-}
-
-.label {
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-.input-field {
-  padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+  border-radius: 10px;
 }
-
-.button {
-  background-color: #4CAF50;
+form input[type="text"],
+form input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+}
+form input[type="submit"] {
+  background-color: #333;
   color: #fff;
-  padding: 10px 20px;
+  padding: 10px;
+  margin-bottom: 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
-
-.button:hover {
-  background-color: #3e8e41;
-}
-
-.error-message {
-  color: red;
-  font-size: 14px;
-  margin-top: 10px;
+form input[type="submit"]:hover {
+  background-color: #444;
 }
 </style>
 </head>
 <body>
-<div class="login-container">
-  <h2>Login</h2>
-  <form>
-    <div class="login-form">
-      <label for="username" class="label">Username:</label>
-      <input type="text" id="username" name="username" class="input-field">
-      <br><br>
-      <label for="password" class="label">Password:</label>
-      <input type="password" id="password" name="password" class="input-field">
-      <br><br>
-      <label for="remember-me" class="label">Remember me:</label>
-      <input type="checkbox" id="remember-me" name="remember-me">
-      <br><br>
-      <button type="submit" class="button">Log In</button>
-    </div>
-  </form>
-  <script>
-    const loginForm = document.querySelector('form');
-    loginForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-      fetch('/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.user_id) {
-          // User logged in successfully
-          console.log('User logged in successfully');
-        } else {
-          // Invalid login credentials
-          const errorMessage = document.getElementById('error-message');
-          errorMessage.textContent = `Error: ${data.error_message}`;
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-    });
-  </script>
+<header>
+  <nav>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+<main>
+  <section>
+    <form>
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username">
+      <br>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password">
+      <br>
+      <input type="submit" value="Login">
+    </form>
+  </section>
+</main>
+<script>
+// JavaScript here
+</script>
 </body>
 </html>

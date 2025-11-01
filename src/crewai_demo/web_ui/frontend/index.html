@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Feature Development Crew - AI-Powered Product Development</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <h1 class="title">
+                    <span class="emoji">🚀</span>
+                    Feature Development Crew
+                </h1>
+                <p class="subtitle">AI-Powered Product Development with Real-time Collaboration</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <div class="container">
+                <!-- Feature Request Section -->
+                <section class="feature-request-section">
+                    <div class="card">
+                        <h2 class="card-title">
+                            <span class="emoji">💡</span>
+                            Feature Request
+                        </h2>
+                        <div class="input-group">
+                            <textarea 
+                                id="featureRequest" 
+                                class="feature-input"
+                                placeholder="Describe the feature you want to build... (e.g., Build a modern user dashboard with analytics, user management, and real-time notifications)"
+                                rows="4"
+                            ></textarea>
+                            <div class="button-group">
+                                <button id="startCrew" class="btn btn-primary">
+                                    <span class="btn-icon">🚀</span>
+                                    Start Development
+                                </button>
+                                <button id="stopCrew" class="btn btn-secondary" disabled>
+                                    <span class="btn-icon">⏹️</span>
+                                    Stop
+                                </button>
+                                <button id="clearAll" class="btn btn-outline">
+                                    <span class="btn-icon">🔄</span>
+                                    Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Progress and Activity Row -->
+                <section class="progress-activity-row">
+                    <!-- Progress Section -->
+                    <div class="progress-section">
+                        <div class="card">
+                            <h2 class="card-title">
+                                <span class="emoji">📊</span>
+                                Progress Overview
+                            </h2>
+                            <div class="progress-container">
+                                <div class="progress-bar">
+                                    <div id="progressFill" class="progress-fill"></div>
+                                </div>
+                                <div class="progress-text">
+                                    <span id="progressPercent">0%</span>
+                                    <span id="progressStatus">Ready to start</span>
+                                </div>
+                            </div>
+                            <div class="task-status">
+                                <div class="task-item" id="task-product">
+                                    <span class="task-icon">📋</span>
+                                    <span class="task-name">Product Manager</span>
+                                    <span class="task-status-badge pending">Pending</span>
+                                </div>
+                                <div class="task-item" id="task-ui">
+                                    <span class="task-icon">🎨</span>
+                                    <span class="task-name">UI/UX Designer</span>
+                                    <span class="task-status-badge pending">Pending</span>
+                                </div>
+                                <div class="task-item" id="task-backend">
+                                    <span class="task-icon">⚙️</span>
+                                    <span class="task-name">Backend Engineer</span>
+                                    <span class="task-status-badge pending">Pending</span>
+                                </div>
+                                <div class="task-item" id="task-frontend">
+                                    <span class="task-icon">💻</span>
+                                    <span class="task-name">Frontend Engineer</span>
+                                    <span class="task-status-badge pending">Pending</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live Activity Section -->
+                    <div class="activity-section">
+                        <div class="card">
+                            <h2 class="card-title">
+                                <span class="emoji">📋</span>
+                                Live Agent Activity
+                                <span id="connectionStatus" class="connection-status">
+                                    <span class="status-dot disconnected"></span>
+                                    <span class="status-text">Disconnected</span>
+                                </span>
+                            </h2>
+                            <div class="activity-container">
+                                <div id="activityLogs" class="activity-logs">
+                                    <div class="log-entry info">
+                                        <span class="log-time">Ready</span>
+                                        <span class="log-message">Waiting for feature request...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Agent Outputs Section -->
+                <section class="outputs-section">
+                    <div class="card">
+                        <h2 class="card-title">
+                            <span class="emoji">📄</span>
+                            Agent Outputs
+                        </h2>
+                        <div class="output-tabs">
+                            <button class="tab-btn active" data-tab="product-spec">
+                                <span class="tab-icon">📋</span>
+                                Product Spec
+                            </button>
+                            <button class="tab-btn" data-tab="wireframe">
+                                <span class="tab-icon">🎨</span>
+                                Wireframe
+                            </button>
+                            <button class="tab-btn" data-tab="backend-api">
+                                <span class="tab-icon">⚙️</span>
+                                Backend API
+                            </button>
+                            <button class="tab-btn" data-tab="html-output">
+                                <span class="tab-icon">💻</span>
+                                HTML Output
+                            </button>
+                        </div>
+                        <div class="output-content">
+                            <div id="product-spec" class="output-panel active">
+                                <div class="output-placeholder">
+                                    <span class="placeholder-icon">📋</span>
+                                    <p>Product specification will appear here after Product Manager completes their task.</p>
+                                </div>
+                            </div>
+                            <div id="wireframe" class="output-panel">
+                                <div class="output-placeholder">
+                                    <span class="placeholder-icon">🎨</span>
+                                    <p>UI/UX wireframe will appear here after Designer completes their task.</p>
+                                </div>
+                            </div>
+                            <div id="backend-api" class="output-panel">
+                                <div class="output-placeholder">
+                                    <span class="placeholder-icon">⚙️</span>
+                                    <p>Backend API specification will appear here after Backend Engineer completes their task.</p>
+                                </div>
+                            </div>
+                            <div id="html-output" class="output-panel">
+                                <div class="output-placeholder">
+                                    <span class="placeholder-icon">💻</span>
+                                    <p>Generated HTML will appear here after Frontend Engineer completes their task.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <p>&copy; 2024 Feature Development Crew. Powered by CrewAI.</p>
+            </div>
+        </footer>
+    </div>
+
+
+    <!-- Scripts -->
+    <script src="/static/websocket-client.js"></script>
+    <script src="/static/output-display.js"></script>
+    <script src="/static/task-progress.js"></script>
+    <script src="/static/app.js"></script>
+</body>
+</html>
