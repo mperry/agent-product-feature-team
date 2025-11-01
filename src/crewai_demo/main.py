@@ -5,6 +5,7 @@ import warnings
 from datetime import datetime
 
 from crewai_demo.crew import CrewaiDemo
+from crewai_demo.crew_product_feature import CrewFeatureDevelopment
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
@@ -18,12 +19,12 @@ def run():
     Run the crew.
     """
     inputs = {
-        'topic': 'VR & AR systems',
-        'current_year': str(datetime.now().year)
-    }
-    
+        # 'topic': 'VR & AR systems',
+        # 'current_year': str(datetime.now().year)
+        'feature_request':'build a classic login page for customers to login system with username and password as well as remember me option.'}
     try:
-        CrewaiDemo().crew().kickoff(inputs=inputs)
+        crew_instance = CrewFeatureDevelopment()
+        crew_instance.product_feature_crew().kickoff(inputs=inputs)
     except Exception as e:
         raise Exception(f"An error occurred while running the crew: {e}")
 
